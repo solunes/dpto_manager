@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
-import { TabsPage } from '../tabs/tabs';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-login',
@@ -26,7 +26,7 @@ export class LoginPage {
 			if (allowed) {
 				setTimeout(() => {
 					this.loading.dismiss();
-					this.nav.setRoot(TabsPage);
+					this.nav.setRoot(HomePage);
 					this.storage.set('login', true);
 				});
 			} else {
@@ -57,11 +57,5 @@ export class LoginPage {
 	}
 
   	ionViewCanEnter(){
-		this.storage.get('login').then((value) => {
-	    	if(value) {
-	    		this.nav.setRoot(TabsPage)
-	    	}
-	    });
   	}
-
 }
