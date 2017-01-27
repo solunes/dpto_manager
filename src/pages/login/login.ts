@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage';
-import { NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
+import { MenuController, NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { HomePage } from '../home/home';
 
@@ -10,6 +10,7 @@ import { HomePage } from '../home/home';
   templateUrl: 'login.html'
 })
 export class LoginPage {
+  	loginStatus: boolean = false;
 	loading: Loading;
 	registerCredentials = {email: '', password: ''};
 
@@ -18,7 +19,11 @@ export class LoginPage {
 		private alertCtrl: AlertController, 
 		private loadingCtrl: LoadingController, 
 		private storage: Storage,
-		private http: Http) {}
+		private menu: MenuController,
+		private http: Http) {
+
+		this.menu.enable(false);
+	}
 
 	public login(){
 		this.showLoading();
@@ -56,6 +61,7 @@ export class LoginPage {
 		alert.present(prompt);
 	}
 
-  	ionViewCanEnter(){
+  	ionViewWillLeave(){
+  		this.menu.enable(true);
   	}
 }
