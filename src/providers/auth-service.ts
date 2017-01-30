@@ -16,6 +16,7 @@ export class User {
 @Injectable()
 export class AuthService {
     currentUser: User;
+    logoutButton = '<button ion-button (click)="globals.logout()"><ion-icon name="log-out"></ion-icon></button>';
 
     constructor(private http: Http) {}
 
@@ -58,5 +59,10 @@ export class AuthService {
             observer.complete();
         });
     }
+
+    
+      showSomething(){
+          console.log('nothing');
+      }
 
 }

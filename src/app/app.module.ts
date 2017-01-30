@@ -2,25 +2,31 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
+import { ToolbarComponent } from './toolbar.component';
+
 import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
+import { LoginPage } from '../pages/login/login';
+import { PendingPaymentPage } from '../pages/pending-payment/pending-payment';
+import { DebtorPage } from '../pages/debtor/debtor';
+import { NotificationPage } from '../pages/notification/notification';
+import { PaymentHistoryPage } from '../pages/payment-history/payment-history';
+import { RegisterPaymentPage } from '../pages/register-payment/register-payment';
 
 import { AuthService } from '../providers/auth-service';
-import { RegisterPage } from '../pages/register/register';
-import { LoginPage } from '../pages/login/login';
 
 @NgModule({
   declarations: [
     MyApp,
+    ToolbarComponent,
     AboutPage,
-    ContactPage,
     HomePage,
-    TabsPage,
-
     LoginPage,
-    RegisterPage
+    PendingPaymentPage,
+    DebtorPage,
+    NotificationPage,
+    PaymentHistoryPage,
+    RegisterPaymentPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -28,13 +34,15 @@ import { LoginPage } from '../pages/login/login';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    ToolbarComponent,
     AboutPage,
-    ContactPage,
     HomePage,
-    TabsPage,
-
     LoginPage,
-    RegisterPage
+    PendingPaymentPage,
+    DebtorPage,
+    NotificationPage,
+    PaymentHistoryPage,
+    RegisterPaymentPage
   ],
   providers: [Storage, AuthService, {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
