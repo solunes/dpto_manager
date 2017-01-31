@@ -32,6 +32,8 @@ export class LoginPage {
 				setTimeout(() => {
 					this.loading.dismiss();
 					this.nav.setRoot(HomePage);
+					this.storage.set('token', allowed['token']);
+					this.storage.set('expirationDate', allowed['expirationDate']);
 					this.storage.set('login', true);
 				});
 			} else {

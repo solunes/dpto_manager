@@ -27,9 +27,7 @@ export class ToolbarComponent{
   @Input() title_page: string = 'Toolbar';
 	constructor(private navCtrl: NavController, 
       private auth: AuthService, 
-      private storage: Storage){
-    
-  }
+      private storage: Storage){}
 
   public logout() {
       this.auth.logout().subscribe(succ => {

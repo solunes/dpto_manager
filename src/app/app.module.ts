@@ -14,6 +14,8 @@ import { PaymentHistoryPage } from '../pages/payment-history/payment-history';
 import { RegisterPaymentPage } from '../pages/register-payment/register-payment';
 
 import { AuthService } from '../providers/auth-service';
+import { HttpClient } from '../providers/http-client';
+import { LoadingClient } from '../providers/loading-client';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,6 @@ import { AuthService } from '../providers/auth-service';
     PaymentHistoryPage,
     RegisterPaymentPage
   ],
-  providers: [Storage, AuthService, {provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [Storage, AuthService, HttpClient, LoadingClient, {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}
