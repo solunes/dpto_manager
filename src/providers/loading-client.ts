@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { AlertController, LoadingController, Loading } from 'ionic-angular';
+import { ToastController, LoadingController, Loading } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 
 /*
@@ -13,7 +13,9 @@ import 'rxjs/add/operator/map';
 export class LoadingClient {
 	loading: Loading;
 
-  	constructor(public http: Http, public loadingCtrl: LoadingController, public alertCtrl: AlertController) {}
+  	constructor(public http: Http, 
+  		public loadingCtrl: LoadingController, 
+  		public toastCtrl: ToastController) {}
 
   	showLoading(){
 		this.loading = this.loadingCtrl.create({
@@ -26,12 +28,12 @@ export class LoadingClient {
 		setTimeout(() => {
 			this.loading.dismiss();
 		});
-		let alert = this.alertCtrl.create({
-			title: 'Fail',
-			subTitle: text,
-			buttons: ['OK']
+		const toast = this.toastCtrl.create({
+			message: text,
+			showCloseButton: true,
+			closeButtonText: 'OK'
 		});
-		alert.present(prompt);
+		toast.present();
 	}
 
 	dismiss(){

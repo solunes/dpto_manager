@@ -25,12 +25,15 @@ export class AboutPage {
 	  	http.get('http://dptomanager.solunes.com/api/building-content', token)
 	  		.map(res => res.json())
 	  		.subscribe(allowed => {
-	  			console.log(allowed);
+	  			console.log("allowed: " + allowed);
 	  			loading.dismiss();
 	  			this.name = allowed['name'];
 	  			this.text = allowed['text'];
 	  		}, error => {
-	  			console.log(error);
+	  			console.log("error " + error);
+	  			loading.loading.dismiss().then(() => {
+		  			loading.showError(error);
+	  			});
 	  		});
   	})
   }
