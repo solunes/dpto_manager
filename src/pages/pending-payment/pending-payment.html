@@ -2,4 +2,18 @@
 
 <ion-content padding>
 
+<ion-card style="margin-top: 55px;">
+
+  <ion-card-header>
+    Mis Deudas Pendientes
+  </ion-card-header>
+
+  <ion-list>
+    <ion-item *ngFor='let pendingPayment of pendingPayments'>
+      {{ pendingPayment.name }}
+    </ion-item>
+  </ion-list>
+
+</ion-card>
+
 </ion-content>

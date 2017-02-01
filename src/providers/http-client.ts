@@ -21,11 +21,11 @@ export class HttpClient {
   }
 
   get(url, token) {
-    let headers = this.createAuthorizationHeader(token);
-    console.log("get "+token);
-    return this.http.get(url, {
-      headers: headers
-    });
+      let headers = this.createAuthorizationHeader(token);
+      console.log("get "+token);
+      return this.http.get(url, {
+        headers: headers
+      });
   }
 
   post(url, token, data) {

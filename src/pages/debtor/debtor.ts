@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { Storage } from '@ionic/storage';
 import { NavController, NavParams } from 'ionic-angular';
 
+import { HttpClient } from '../../providers/http-client';
+import { LoadingClient } from '../../providers/loading-client';
 /*
   Generated class for the Debtor page.
 
@@ -8,16 +11,38 @@ import { NavController, NavParams } from 'ionic-angular';
   Ionic pages and navigation.
 */
 @Component({
-  selector: 'page-debtor',
-  templateUrl: 'debtor.html'
+    selector: 'page-debtor',
+    templateUrl: 'debtor.html'
 })
 export class DebtorPage {
 	title_page = 'Deudores morosos';
+    debtors: Array<JSON>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+    constructor(
+        public http: HttpClient, 
+        public navCtrl: NavController, 
+        private loading: LoadingClient,
+        private storage: Storage,
+        public navParams: NavParams) {
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad DebtorPage');
-  }
+        loading.showLoading();
+        storage.get('token').then(value => {
+            http.get('http://dptomanager.solunes.com/api/payment-details/total/apartment/pending/all/all', value)
+            .map(res => res.json())
+            .subscribe(result => {
+                /*this.debtors = result['total_payments'];*/
+                for (var i in result['total_payments']) {
+                    console.log(i);
+                }
+                loading.dismiss();
+            }, error => {
+                loading.dismiss();
+                loading.showError(error);
+            });
+        })
+    }
 
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad DebtorPage');
+    }
 }

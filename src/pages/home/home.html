@@ -9,13 +9,14 @@
   </ion-card-header>
 
   <ion-list>
-    <ion-item>Deuda 1</ion-item>
-    <ion-item>Deuda 2</ion-item>
+    <ion-item *ngFor='let pendingPayment of pendingPayments'>
+      {{ pendingPayment.name }}
+    </ion-item>
   </ion-list>
 
   <ion-row>
     <ion-col>
-      <button ion-button clear>
+      <button ion-button clear (click)="goToPendingPayment()">
         <div>Ver más</div>
       </button>
     </ion-col>
@@ -27,17 +28,18 @@
 <ion-card>
 
   <ion-card-header>
-    Mis Deudas Pendientes
+    Deudores Morosos
   </ion-card-header>
 
   <ion-list>
-    <ion-item>Deudor 1</ion-item>
-    <ion-item>Deudor 2</ion-item>
+    <ion-item *ngFor='let debt of debts'>
+      {{ debt.name }} - {{ debt.amount }}
+    </ion-item>
   </ion-list>
 
   <ion-row>
     <ion-col>
-      <button md-button ion-button clear>
+      <button ion-button clear (click)="goToDebtor()">
         <div>Ver más</div>
       </button>
     </ion-col>

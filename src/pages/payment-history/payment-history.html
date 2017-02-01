@@ -2,4 +2,20 @@
 
 <ion-content padding>
 
+<ion-card style="margin-top: 55px;">
+
+  <ion-card-header>
+    Deudores Morosos
+  </ion-card-header>
+
+  <ion-list>
+    <ion-item *ngFor='let history of histories'>
+      	<div>{{ history.name }}</div>
+      	<span>{{ history.amount }} {{ history.currency }}</span>
+      	<p>{{ history.date }}</p>
+    </ion-item>
+  </ion-list>
+
+</ion-card>
+
 </ion-content>
