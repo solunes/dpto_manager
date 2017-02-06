@@ -24,6 +24,13 @@ export class LoadingClient {
 		this.loading.present();
 	}
 
+	showLoadingText(text){
+		this.loading = this.loadingCtrl.create({
+			content: text
+		});
+		this.loading.present();
+	}
+
 	showError(text){
 		setTimeout(() => {
 			this.loading.dismiss();
@@ -34,6 +41,15 @@ export class LoadingClient {
 			closeButtonText: 'OK'
 		});
 		toast.present();
+	}
+
+	presentToast(text) {
+	  	let toast = this.toastCtrl.create({
+	    	message: text,
+	    	duration: 3000,
+	    	position: 'top'
+	  	});
+	  	toast.present();
 	}
 
 	dismiss(){

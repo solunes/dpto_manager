@@ -30,6 +30,7 @@ export class DebtorPage {
             http.get('http://dptomanager.solunes.com/api/payment-details/total/apartment/pending/all/all', value)
             .map(res => res.json())
             .subscribe(result => {
+                console.log(result['total_payments']);
                 /*this.debtors = result['total_payments'];*/
                 for (var i in result['total_payments']) {
                     console.log(i);
