@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Storage } from '@ionic/storage';
 import { NavController, Platform, ActionSheetController, ToastController, } from 'ionic-angular';
 import { Camera, File, Transfer } from 'ionic-native';
 import { LoadingClient } from '../../providers/loading-client';
@@ -19,17 +20,29 @@ let FilePath: any;// = window["IonicNative"].FilePath;
 export class RegisterPaymentPage {
 	title_page = 'Registar Pago';
   lastImage: string = null;
+  params = {
+    type: '',
+    amount: '',
+    currency: '',
+    payment_array: []
+  }
+
+  token: string;
 
   constructor(public navCtrl: NavController,
   public actionSheetCtrl: ActionSheetController,
   public toastCtrl: ToastController,
   public platform: Platform,
+  private storage: Storage,
   public loading: LoadingClient) {
     platform.ready().then(()=>{
     //I made a plugin for testing...
       console.log("window['pluginTest']: "+ (window['pluginTest'] ? true: false));
       console.log("window['FilePath']: "+ (window['FilePath'] ? true: false));
       FilePath = window['FilePath'];
+      storage.get('token').then(value => {
+        this.token = value;
+      });
     })
   }
 
@@ -124,34 +137,41 @@ export class RegisterPaymentPage {
     }
   }
 
+  error;
   public uploadImage(){
-    let url = "http://path/to/your/uploader/script/on/remote/server";
+    let url = "http://dptomanager.solunes.com/api/create-account";
 
     let targetPath = this.pathForImage(this.lastImage);
 
     let fileName = this.lastImage;
 
     let options = {
-      fileKey: "fileUpload",
+      fileKey: 'deposit_image',
       fileName: fileName,
-      chunkMode: "false",
-      mimeType: "multipart/form-data",
-      params : {'fileName': fileName}
+      chunkedMode: false,
+      params : {
+        'actor_id': 1,
+        'type': 'income',
+        'amount': 456,
+        'currency': 'bob',
+        'payment_array': [1,2,3,5],
+      },
+      headers: {Authorization: 'Bearer '+ this.token}
     };
 
     const fileTransfer = new Transfer();
 
     this.loading.showLoadingText('uploading...');
-
     fileTransfer.upload(targetPath, url, options)
-    .then(data=>{
+    .then(data => {
       this.loading.dismiss();
       this.presentToast("Image successfull uploaded");
       //console.log(JSON.stringify(data));
+      this.lastImage = null;
     }, error=>{
       this.loading.dismiss();
-      this.presentToast("Error while uploading file");
-      //console.log(JSON.stringify(error));
+      this.error = JSON.stringify(error);
+      /*this.presentToast(JSON.stringify(error));*/
     });
   }
 }

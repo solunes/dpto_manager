@@ -1,10 +1,29 @@
 <toolbar [title_page]='title_page'></toolbar>
 
-<ion-content padding>
-	<img src="{{pathForImage(lastImage)}}" style="width: 100%" [hidden]="lastImage === null">
-  	<h3 [hidden]="lastImage !== null">Please Select Image!</h3>
+<ion-content padding style="margin-top: 55px;">
+	<img src="{{ pathForImage(lastImage) }}" style="width: 100%" [hidden]="true">
 
-  	<h4>{{ copyFileError }}</h4>
+  <ion-item>
+    <ion-label fixed>Type</ion-label>
+    <ion-select [(ngModel)]="params.type">
+      <ion-option value="income" selected="true">Income</ion-option>
+      <ion-option value="expense">Expense</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label fixed>Amount</ion-label>
+    <ion-input type="number" name="amount" [(ngModel)]="params.amount" required></ion-input>
+  </ion-item>
+
+  <ion-item full>
+    <ion-label fixed>Currency</ion-label>
+    <ion-select [(ngModel)]="params.currency" required>
+      <ion-option value="bob" selected="true">BOB</ion-option>
+      <ion-option value="usd">USD</ion-option>
+    </ion-select>
+  </ion-item>
+    <p>{{error}}</p>
 </ion-content>
 
 <ion-footer>

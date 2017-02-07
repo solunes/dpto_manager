@@ -13,6 +13,7 @@ import { NotificationPage } from '../pages/notification/notification';
 import { PaymentHistoryPage } from '../pages/payment-history/payment-history';
 import { RegisterPaymentPage } from '../pages/register-payment/register-payment';
 
+import { AppSettings } from '../providers/app-settings';
 import { AuthService } from '../providers/auth-service';
 import { HttpClient } from '../providers/http-client';
 import { LoadingClient } from '../providers/loading-client';
@@ -46,6 +47,6 @@ import { LoadingClient } from '../providers/loading-client';
     PaymentHistoryPage,
     RegisterPaymentPage
   ],
-  providers: [Storage, AuthService, HttpClient, LoadingClient, {provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [Storage, AuthService, AppSettings, HttpClient, LoadingClient, {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}

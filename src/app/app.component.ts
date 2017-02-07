@@ -28,7 +28,7 @@ export class MyApp {
       
       this.storage.get('login').then((value) => {
         if(value) {
-          this.rootPage = HomePage;
+          this.rootPage = RegisterPaymentPage;
           console.log('home ');
         } else {
           this.rootPage = LoginPage;
