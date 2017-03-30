@@ -21,21 +21,22 @@ export class RegisterPaymentPage {
 	title_page = 'Registar Pago';
   lastImage: string = null;
   params = {
-    type: '',
-    amount: '',
-    currency: '',
+    type: 'income',
+    amount: 0,
+    currency: 'bob',
     payment_array: []
   }
 
   token: string;
 
   constructor(public navCtrl: NavController,
-  public actionSheetCtrl: ActionSheetController,
-  public toastCtrl: ToastController,
-  public platform: Platform,
-  private storage: Storage,
-  public loading: LoadingClient) {
-    platform.ready().then(()=>{
+    public actionSheetCtrl: ActionSheetController,
+    public toastCtrl: ToastController,
+    public platform: Platform,
+    private storage: Storage,
+    public loading: LoadingClient) {
+    
+    platform.ready().then(() => {
     //I made a plugin for testing...
       console.log("window['pluginTest']: "+ (window['pluginTest'] ? true: false));
       console.log("window['FilePath']: "+ (window['FilePath'] ? true: false));
@@ -137,7 +138,7 @@ export class RegisterPaymentPage {
     }
   }
 
-  error;
+  logText;
   public uploadImage(){
     let url = "http://dptomanager.solunes.com/api/create-account";
 
@@ -151,10 +152,10 @@ export class RegisterPaymentPage {
       chunkedMode: false,
       params : {
         'actor_id': 1,
-        'type': 'income',
-        'amount': 456,
-        'currency': 'bob',
-        'payment_array': [1,2,3,5],
+        'type': this.params.type,
+        'amount': this.params.amount,
+        'currency': this.params.currency,
+        'payment_array': this.params.payment_array,
       },
       headers: {Authorization: 'Bearer '+ this.token}
     };
@@ -164,13 +165,14 @@ export class RegisterPaymentPage {
     this.loading.showLoadingText('uploading...');
     fileTransfer.upload(targetPath, url, options)
     .then(data => {
+      console.log(JSON.stringify(data));
       this.loading.dismiss();
       this.presentToast("Image successfull uploaded");
-      //console.log(JSON.stringify(data));
       this.lastImage = null;
-    }, error=>{
+    }, error => {
+      console.log(JSON.stringify(error));
       this.loading.dismiss();
-      this.error = JSON.stringify(error);
+      this.logText = JSON.stringify(error);
       /*this.presentToast(JSON.stringify(error));*/
     });
   }

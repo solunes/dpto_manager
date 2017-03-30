@@ -43,7 +43,7 @@ export class HomePage {
   	});
   }
 
-  public goToPendingPayment(){
+  private goToPendingPayment(){
   	this.navCtrl.setRoot(PendingPaymentPage);
   }
 
