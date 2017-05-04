@@ -1,19 +1,11 @@
-<toolbar [title_page]='title_page'></toolbar>
+<toolbar [title_page]='title_page' [notificationsCount]='notificationsCount'></toolbar>
 
 <ion-content padding style="margin-top: 55px;">
 	<img src="{{ pathForImage(lastImage) }}" style="width: 100%" [hidden]="true">
 
   <ion-item>
-    <ion-label fixed>Type</ion-label>
-    <ion-select [(ngModel)]="params.type">
-      <ion-option value="income" checked="true">Income</ion-option>
-      <ion-option value="expense">Expense</ion-option>
-    </ion-select>
-  </ion-item>
-
-  <ion-item>
     <ion-label fixed>Amount</ion-label>
-    <ion-input type="number" name="amount" [(ngModel)]="params.amount" required></ion-input>
+    <ion-input type="number" name="amount" (input)="changeAmount()" [(ngModel)]="params.amount" required></ion-input>
   </ion-item>
 
   <ion-item full>
@@ -23,21 +15,20 @@
       <ion-option value="usd">USD</ion-option>
     </ion-select>
   </ion-item>
-
-  <ion-list>
+  
+  <ion-item>
+    <ion-label>Saldo: {{ saldo }}</ion-label>
+  </ion-item>
+  <ion-list class="margin_bottom">
     <ion-list-header>Pagos</ion-list-header>
-    <ion-item>
-      <ion-label>Daenerys Targaryen</ion-label>
-      <ion-checkbox color="dark" checked="true"></ion-checkbox>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Arya Stark</ion-label>
-      <ion-checkbox color='red'></ion-checkbox>
+    <ion-item [@itemState]="in" *ngFor="let payment_item of payment_array">
+      <ion-label>
+        <div>{{ payment_item.amount }} - {{ payment_item.name }}</div>
+        <div *ngIf="payment_item.saldo > 0" >Saldo: {{ payment_item.saldo }}</div>
+      </ion-label>
+      <ion-checkbox color="primary" [disabled]="payment_item.disabled" [(ngModel)]="payment_item.checked" (ionChange)="AddRemoveSelect(payment_item);"></ion-checkbox>
     </ion-item>
   </ion-list>
-
-  <p>{{error}}</p>
 </ion-content>
 
 <ion-footer>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, trigger, state, style, transition, animate } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -13,11 +13,25 @@ import { LoadingClient } from '../../providers/loading-client';
 */
 @Component({
   selector: 'page-payment-history',
-  templateUrl: 'payment-history.html'
+  templateUrl: 'payment-history.html',
+  animations: [
+    trigger('itemState', [
+      state('in', style({opacity: 1, transform: 'translateY(0)'})),
+      //Enter
+      transition('void => *', [
+        style({
+          opacity: 0,
+          transform: 'translateY(-50%)'
+        }),
+        animate('400ms ease-in-out')
+      ]),
+    ])
+  ]
 })
 export class PaymentHistoryPage {
 	title_page = 'Historial de pagos';
   histories: Array<any>;
+  notificationsCount: number;
 
   constructor(public http: HttpClient, 
         public navCtrl: NavController, 
@@ -36,7 +50,10 @@ export class PaymentHistoryPage {
           loading.dismiss();
           loading.showError(error);
         });
-    })
+    });
+    storage.get('notificationsCount').then(value => {
+        this.notificationsCount = value;
+      });
   }
 
 }

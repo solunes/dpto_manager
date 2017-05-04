@@ -1,19 +1,13 @@
-<toolbar [title_page]='title_page'></toolbar>
+<toolbar [title_page]='title_page' [notificationsCount]='notificationsCount'></toolbar>
 
 <ion-content padding>
 
-<ion-card style="margin-top: 55px;">
-
-  <ion-card-header>
-    Mis Deudas Pendientes
-  </ion-card-header>
-
-  <ion-list>
-    <ion-item *ngFor='let pendingPayment of pendingPayments'>
-      {{ pendingPayment.name }}
+  <ion-list class="top">
+    <ion-item [@itemState]="in" *ngFor='let pendingPayment of pendingPayments'>
+        <div>{{ pendingPayment.amount | number }} {{ pendingPayment.currency | mycurrency  }}</div>
+        <p>{{ pendingPayment.name }}</p>
     </ion-item>
   </ion-list>
 
-</ion-card>
 
 </ion-content>

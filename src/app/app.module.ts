@@ -18,6 +18,8 @@ import { AuthService } from '../providers/auth-service';
 import { HttpClient } from '../providers/http-client';
 import { LoadingClient } from '../providers/loading-client';
 
+import { Currency } from '../app/pipes/currency';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -29,7 +31,8 @@ import { LoadingClient } from '../providers/loading-client';
     DebtorPage,
     NotificationPage,
     PaymentHistoryPage,
-    RegisterPaymentPage
+    RegisterPaymentPage,
+    Currency
   ],
   imports: [
     IonicModule.forRoot(MyApp)

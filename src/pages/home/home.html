@@ -1,4 +1,4 @@
-<toolbar [title_page]='title_page'></toolbar>
+<toolbar [title_page]='title_page' [notificationsCount]='notificationsCount'></toolbar>
 
 <ion-content padding>
 
@@ -9,8 +9,9 @@
   </ion-card-header>
 
   <ion-list>
-    <ion-item *ngFor='let pendingPayment of pendingPayments'>
-      {{ pendingPayment.name }}
+    <ion-item [@itemState]="in" *ngFor='let pendingPayment of pendingPayments'>
+      <div>{{ pendingPayment.amount | number }} {{ pendingPayment.currency | mycurrency  }}</div>
+      <p>{{ pendingPayment.name }}</p>
     </ion-item>
   </ion-list>
 
@@ -32,8 +33,11 @@
   </ion-card-header>
 
   <ion-list>
-    <ion-item *ngFor='let debt of debts'>
-      {{ debt.name }} - {{ debt.amount }}
+    <ion-item [@itemState]="in" *ngFor='let debt of debts'>
+      <ion-avatar item-left>
+            <h1 ion-text color="primary">{{ debt.name }}</h1>
+        </ion-avatar>
+        <div>{{ debt.amount | number }} {{ debt.currency | mycurrency  }}</div>
     </ion-item>
   </ion-list>
 

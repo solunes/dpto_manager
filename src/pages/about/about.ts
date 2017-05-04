@@ -11,6 +11,7 @@ import { LoadingClient } from '../../providers/loading-client';
 })
 export class AboutPage {
 	title_page = 'Acerca del Edificio';
+    notificationsCount: number;
 	name: string;
 	text: string;
 
@@ -35,6 +36,9 @@ export class AboutPage {
 		  			loading.showError(error);
 	  			});
 	  		});
-  	})
+  	});
+      storage.get('notificationsCount').then(value => {
+            this.notificationsCount = value;
+        });
   }
 }

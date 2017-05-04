@@ -1,21 +1,13 @@
-<toolbar [title_page]='title_page'></toolbar>
+<toolbar [title_page]='title_page' [notificationsCount]='notificationsCount'></toolbar>
 
 <ion-content padding>
 
-<ion-card style="margin-top: 55px;">
-
-  <ion-card-header>
-    Deudores Morosos
-  </ion-card-header>
-
-  <ion-list>
-    <ion-item *ngFor='let history of histories'>
+  <ion-list style="margin-top: 55px;">
+    <ion-item [@itemState]="in" *ngFor='let history of histories'>
       	<div>{{ history.name }}</div>
-      	<span>{{ history.amount }} {{ history.currency }}</span>
-      	<p>{{ history.date }}</p>
+      	<span>{{ history.amount | number }} {{ history.currency | mycurrency }}</span>
+      	<p>{{ history.date | date }}</p>
     </ion-item>
   </ion-list>
-
-</ion-card>
 
 </ion-content>

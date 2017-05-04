@@ -8,7 +8,6 @@ import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
 import { PendingPaymentPage } from '../pages/pending-payment/pending-payment';
 import { DebtorPage } from '../pages/debtor/debtor';
-import { NotificationPage } from '../pages/notification/notification';
 import { PaymentHistoryPage } from '../pages/payment-history/payment-history';
 import { RegisterPaymentPage } from '../pages/register-payment/register-payment';
 
@@ -28,7 +27,7 @@ export class MyApp {
       
       this.storage.get('login').then((value) => {
         if(value) {
-          this.rootPage = RegisterPaymentPage;
+          this.rootPage = DebtorPage;
           console.log('home ');
         } else {
           this.rootPage = LoginPage;
@@ -39,7 +38,6 @@ export class MyApp {
         { title: 'Inicio', component: HomePage },
         { title: 'Pagos Pendientes', component: PendingPaymentPage },
         { title: 'Deudores Morosos', component: DebtorPage },
-        { title: 'Notificaciones', component: NotificationPage },
         { title: 'Historial de Pagos', component: PaymentHistoryPage },
         { title: 'Acerca del edificio', component: AboutPage },
         { title: 'Registrar pago', component: RegisterPaymentPage }
