@@ -2,6 +2,10 @@ import { Component, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Platform, MenuController, Nav } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
+import {
+  Push,
+  PushToken
+} from '@ionic/cloud-angular';
 
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
@@ -21,6 +25,7 @@ export class MyApp {
 
   constructor(platform: Platform,
     private storage: Storage, 
+    public push: Push,
     public menu: MenuController) {
     
     platform.ready().then(() => {
@@ -46,7 +51,20 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
+
+      this.push.register().then((t: PushToken) => {
+        return this.push.saveToken(t);
+      }).then((t: PushToken) => {
+        console.log('Token saved:', t.token);
+      });
+ 
+      this.push.rx.notification()
+      .subscribe((msg) => {
+        console.log('I received awesome push: ' + msg);
+      });
     });
+
+
   }
 
   public openPage(page) {

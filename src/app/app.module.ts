@@ -1,6 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { MyApp } from './app.component';
 import { ToolbarComponent } from './toolbar.component';
 
@@ -20,6 +21,24 @@ import { LoadingClient } from '../providers/loading-client';
 
 import { Currency } from '../app/pipes/currency';
 
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'ecf40d0b'
+  },
+  'push': {
+    'sender_id': '1086122766674',
+    'pluginConfig': {
+      'ios': {
+        'badge': true,
+        'sound': true
+      },
+      'android': {
+        'iconColor': '#ff0000'
+      }
+    }
+  }
+};
+
 @NgModule({
   declarations: [
     MyApp,
@@ -35,7 +54,8 @@ import { Currency } from '../app/pipes/currency';
     Currency
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
