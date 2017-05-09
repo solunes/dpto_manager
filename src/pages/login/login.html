@@ -1,32 +1,23 @@
 <ion-content class="login-content" padding>
   <ion-row class="logo-row">
     <ion-col>
-      <ion-img src="../../assets/icon/favicon.ico"></ion-img>
+      <img src="assets/icon/favicon.ico">
     </ion-col>
   </ion-row>
-  <div>
+  <ion-list inset>
     <form (ngSubmit)="login()" #registerForm="ngForm">
-      <ion-row>
-        <ion-col>
-          <ion-list inset>
-            <ion-item>
-              <ion-label floating>Email</ion-label>
-              <ion-input type="email" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
-            </ion-item>
 
-            <ion-item>
-              <ion-label floating>Password</ion-label>
-              <ion-input type="password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-      </ion-row>
+        <ion-item>
+          <ion-label floating>Email</ion-label>
+          <ion-input type="email" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
+        </ion-item>
 
-      <ion-row>
-        <ion-col>
-          <button ion-button full type="submit" [disabled]="!registerForm.form.valid">Login</button>
-        </ion-col>
-      </ion-row>
+        <ion-item>
+          <ion-label floating>Password</ion-label>
+          <ion-input type="password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+        </ion-item>
+
+      <button ion-button full type="submit" [disabled]="!registerForm.form.valid">Login</button>
     </form>
-  </div>
+  </ion-list>
 </ion-content>

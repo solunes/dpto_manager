@@ -2,6 +2,8 @@ import { Component, trigger, state, style, animate, transition } from '@angular/
 import { Storage } from '@ionic/storage';
 import { NavController, NavParams } from 'ionic-angular';
 
+import { DatePipe } from '@angular/common';
+
 import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
 /*
@@ -38,7 +40,6 @@ export class NotificationPage {
     private loading: LoadingClient,
     public navParams: NavParams) {
       loading.showLoading();
-
       storage.set('notificationsCount','');
 
       storage.get('token').then(value => {

@@ -1,4 +1,4 @@
-import { Component, Pipe, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, trigger, state, style, transition, animate } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NavController, NavParams } from 'ionic-angular';
 

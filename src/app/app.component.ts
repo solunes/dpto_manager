@@ -15,6 +15,8 @@ import { DebtorPage } from '../pages/debtor/debtor';
 import { PaymentHistoryPage } from '../pages/payment-history/payment-history';
 import { RegisterPaymentPage } from '../pages/register-payment/register-payment';
 
+import { LoadingClient } from '../providers/loading-client';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -23,13 +25,13 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
   rootPage: any;
 
-  constructor(platform: Platform,
+  constructor(public platform: Platform,
+    private load: LoadingClient, 
     private storage: Storage, 
     public push: Push,
     public menu: MenuController) {
     
     platform.ready().then(() => {
-      
       this.storage.get('login').then((value) => {
         if(value) {
           this.rootPage = DebtorPage;
@@ -52,19 +54,31 @@ export class MyApp {
       StatusBar.styleDefault();
       Splashscreen.hide();
 
-      this.push.register().then((t: PushToken) => {
+      this.initPush();
+      
+    });
+
+
+  }
+
+  public initPush(){
+    if (!this.platform.is('cordova')) {
+        console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
+        console.log("virtual");
+        return;
+    }
+    this.push.register().then((t: PushToken) => {
         return this.push.saveToken(t);
       }).then((t: PushToken) => {
+        this.load.presentToast('Token saved: ' + t.token);
         console.log('Token saved:', t.token);
       });
  
       this.push.rx.notification()
       .subscribe((msg) => {
+        this.load.presentToast('I received awesome push: ' + msg);
         console.log('I received awesome push: ' + msg);
       });
-    });
-
-
   }
 
   public openPage(page) {

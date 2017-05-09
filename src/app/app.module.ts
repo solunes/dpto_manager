@@ -1,5 +1,5 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { Storage } from '@ionic/storage';
+import { NgModule, ErrorHandler, LOCALE_ID } from '@angular/core';
+import { IonicStorageModule } from '@ionic/storage';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import { MyApp } from './app.component';
@@ -23,7 +23,7 @@ import { Currency } from '../app/pipes/currency';
 
 const cloudSettings: CloudSettings = {
   'core': {
-    'app_id': 'ecf40d0b'
+    'app_id': '6e039abd'
   },
   'push': {
     'sender_id': '1086122766674',
@@ -55,6 +55,7 @@ const cloudSettings: CloudSettings = {
   ],
   imports: [
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
@@ -70,6 +71,13 @@ const cloudSettings: CloudSettings = {
     PaymentHistoryPage,
     RegisterPaymentPage
   ],
-  providers: [Storage, AuthService, AppSettings, HttpClient, LoadingClient, {provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+    AuthService,
+    AppSettings, 
+    HttpClient, 
+    LoadingClient, 
+    {provide: LOCALE_ID, useValue: 'es-ES'},
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
+  ] 
 })
 export class AppModule {}
