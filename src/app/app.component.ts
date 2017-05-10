@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import { Platform, MenuController, AlertController, Nav } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import {
   Push,
-  PushToken
+  PushToken, IPushMessage
 } from '@ionic/cloud-angular';
 
 import { LoginPage } from '../pages/login/login';
@@ -14,6 +14,7 @@ import { PendingPaymentPage } from '../pages/pending-payment/pending-payment';
 import { DebtorPage } from '../pages/debtor/debtor';
 import { PaymentHistoryPage } from '../pages/payment-history/payment-history';
 import { RegisterPaymentPage } from '../pages/register-payment/register-payment';
+import { NotificationPage } from '../pages/notification/notification';
 
 import { LoadingClient } from '../providers/loading-client';
 
@@ -29,6 +30,7 @@ export class MyApp {
     private load: LoadingClient, 
     private storage: Storage, 
     public push: Push,
+    public alertCtrl: AlertController,
     public menu: MenuController) {
     
     platform.ready().then(() => {
@@ -55,30 +57,46 @@ export class MyApp {
       Splashscreen.hide();
 
       this.initPush();
-      
     });
-
-
   }
 
-  public initPush(){
+  public initPush() {
     if (!this.platform.is('cordova')) {
         console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
         console.log("virtual");
         return;
     }
     this.push.register().then((t: PushToken) => {
-        return this.push.saveToken(t);
-      }).then((t: PushToken) => {
-        this.load.presentToast('Token saved: ' + t.token);
-        console.log('Token saved:', t.token);
-      });
+      return this.push.saveToken(t);
+    }).then((t: PushToken) => {
+      this.push.saveToken(t);
+      console.log('Token saved:', t.token);
+    });
  
-      this.push.rx.notification()
-      .subscribe((msg) => {
-        this.load.presentToast('I received awesome push: ' + msg);
-        console.log('I received awesome push: ' + msg);
-      });
+    this.push.rx.notification().subscribe((data:IPushMessage) => {
+      console.log('I received awesome push: ' + JSON.stringify(data));
+      console.log('Foreground: ' +data['raw']);
+      console.log('Foreground: ' +data['raw'].additionalData);
+      if (data.raw.additionalData.foreground) {
+        let confirmAlert = this.alertCtrl.create({
+          title: 'New Notification',
+          message: data.raw.message,
+          buttons: [{
+            text: 'Ignorar',
+            role: 'cancel'
+          }, {
+            text: 'Ver',
+            handler: () => {
+              //TODO: Your logic here
+              this.nav.setRoot(NotificationPage, {message: data.raw.message});
+            }
+          }]
+        });
+        confirmAlert.present();
+      } else {
+        this.nav.setRoot(NotificationPage, {message: data.raw.message});
+      }
+    });
   }
 
   public openPage(page) {
