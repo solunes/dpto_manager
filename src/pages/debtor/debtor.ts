@@ -1,6 +1,6 @@
 import { Component, trigger, state, style, transition, animate } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 
 import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
@@ -34,7 +34,6 @@ export class DebtorPage {
 
   constructor(
     public http: HttpClient, 
-    public navCtrl: NavController, 
     private loading: LoadingClient,
     private storage: Storage,
     public navParams: NavParams) {

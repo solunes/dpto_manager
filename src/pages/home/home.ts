@@ -5,9 +5,8 @@ import { NavController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
-
-import { DebtorPage } from '../../pages/debtor/debtor'
-import { PendingPaymentPage } from '../../pages/pending-payment/pending-payment'
+import { AppRouter } from '../../providers/app-router';
+import { AppSettings } from '../../providers/app-settings';
 
 @Component({
   selector: 'page-home',
@@ -35,8 +34,10 @@ export class HomePage {
   constructor(private navCtrl: NavController, 
     private auth: AuthService, 
     private http: HttpClient,
+    private app_settings: AppSettings,
     private loading: LoadingClient,
-    private storage: Storage) {
+    private storage: Storage,
+    private app_router: AppRouter) {
 
   	storage.get('token').then(value => {
       
@@ -62,10 +63,10 @@ export class HomePage {
   }
 
   private goToPendingPayment(){
-  	this.navCtrl.setRoot(PendingPaymentPage);
+  	this.navCtrl.setRoot(this.app_router.getPage('pending-payment'));
   }
 
   private goToDebtor(){
-  	this.navCtrl.setRoot(DebtorPage);
+  	this.navCtrl.setRoot(this.app_router.getPage('debtor'));
   }
 }

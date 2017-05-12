@@ -8,49 +8,48 @@ import {
 } from '@ionic/cloud-angular';
 
 import { LoginPage } from '../pages/login/login';
-import { HomePage } from '../pages/home/home';
-import { AboutPage } from '../pages/about/about';
-import { PendingPaymentPage } from '../pages/pending-payment/pending-payment';
-import { DebtorPage } from '../pages/debtor/debtor';
-import { PaymentHistoryPage } from '../pages/payment-history/payment-history';
-import { RegisterPaymentPage } from '../pages/register-payment/register-payment';
 import { NotificationPage } from '../pages/notification/notification';
 
 import { LoadingClient } from '../providers/loading-client';
+import { AppRouter } from '../providers/app-router';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  pages: Array<{title: string, component: any}>;
+  pages: any;
+  /*pages: Array<{title: string, component: any}>;*/
   rootPage: any;
 
   constructor(public platform: Platform,
     private load: LoadingClient, 
     private storage: Storage, 
     public push: Push,
+    public app_router: AppRouter,
     public alertCtrl: AlertController,
     public menu: MenuController) {
     
+    console.log('router ini');
+    this.pages = app_router.appRoutes;
     platform.ready().then(() => {
       this.storage.get('login').then((value) => {
         if(value) {
-          this.rootPage = DebtorPage;
-          console.log('home ');
+          this.rootPage = this.app_router.getPage('debtors');
+          console.log('home');
         } else {
           this.rootPage = LoginPage;
           console.log('login');
         }
       });
-      this.pages = [
+/*      this.pages = [
         { title: 'Inicio', component: HomePage },
         { title: 'Pagos Pendientes', component: PendingPaymentPage },
         { title: 'Deudores Morosos', component: DebtorPage },
         { title: 'Historial de Pagos', component: PaymentHistoryPage },
         { title: 'Acerca del edificio', component: AboutPage },
         { title: 'Registrar pago', component: RegisterPaymentPage }
-      ];
+      ];*/
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
@@ -100,6 +99,7 @@ export class MyApp {
   }
 
   public openPage(page) {
+    console.log(page);
     // close the menu when clicking a link from the menu
     this.menu.close();
     // navigate to the new page if it is not the current page

@@ -2,7 +2,6 @@ import { Component, trigger, state, style, transition, animate } from '@angular/
 import { Storage } from '@ionic/storage';
 import { NavController, NavParams } from 'ionic-angular';
 
-
 import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
 /*
@@ -55,9 +54,4 @@ export class PendingPaymentPage {
           this.notificationsCount = value;
         });
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PendingPaymentPage');
-  }
-
 }

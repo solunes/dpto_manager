@@ -2,16 +2,9 @@ import { Component, trigger, state, style, animate, transition } from '@angular/
 import { Storage } from '@ionic/storage';
 import { NavController, NavParams } from 'ionic-angular';
 
-import { DatePipe } from '@angular/common';
-
 import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
-/*
-  Generated class for the Notification page.
 
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-notification',
   templateUrl: 'notification.html',

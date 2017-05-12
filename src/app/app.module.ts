@@ -14,6 +14,7 @@ import { NotificationPage } from '../pages/notification/notification';
 import { PaymentHistoryPage } from '../pages/payment-history/payment-history';
 import { RegisterPaymentPage } from '../pages/register-payment/register-payment';
 
+import { AppRouter } from '../providers/app-router';
 import { AppSettings } from '../providers/app-settings';
 import { AuthService } from '../providers/auth-service';
 import { HttpClient } from '../providers/http-client';
@@ -73,6 +74,7 @@ const cloudSettings: CloudSettings = {
   ],
   providers: [
     AuthService,
+    AppRouter,
     AppSettings, 
     HttpClient, 
     LoadingClient, 

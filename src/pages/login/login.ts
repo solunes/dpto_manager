@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { MenuController, NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
-import { HomePage } from '../home/home';
+import { AppRouter } from '../../providers/app-router';
 
 @Component({
   selector: 'page-login',
@@ -16,6 +16,7 @@ export class LoginPage {
 
 	constructor(private nav: NavController, 
 		private auth: AuthService, 
+		private app_router: AppRouter, 
 		private alertCtrl: AlertController, 
 		private loadingCtrl: LoadingController, 
 		private storage: Storage,
@@ -31,7 +32,7 @@ export class LoginPage {
 			if (allowed) {
 				setTimeout(() => {
 					this.loading.dismiss();
-					this.nav.setRoot(HomePage);
+					this.nav.setRoot(this.app_router.getPage('home'));
 					this.storage.set('actor_id', allowed['actor_id']);
 					this.storage.set('token', allowed['token']);
 					this.storage.set('expirationDate', allowed['expirationDate']);

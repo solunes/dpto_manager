@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { NavController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
@@ -15,8 +14,7 @@ export class AboutPage {
 	name: string;
 	text: string;
 
-  constructor(private navCtrl: NavController, 
-    private auth: AuthService, 
+  constructor(private auth: AuthService, 
     private http: HttpClient,
     private loading: LoadingClient,
     private storage: Storage) {
@@ -37,8 +35,8 @@ export class AboutPage {
 	  			});
 	  		});
   	});
-      storage.get('notificationsCount').then(value => {
-            this.notificationsCount = value;
-        });
+    storage.get('notificationsCount').then(value => {
+        this.notificationsCount = value;
+    });
   }
 }

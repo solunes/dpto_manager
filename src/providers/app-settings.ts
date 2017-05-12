@@ -14,5 +14,4 @@ export class AppSettings {
   public getApiUrl(){
   	return CONFIG.apiUrl;
   }
-
 }
