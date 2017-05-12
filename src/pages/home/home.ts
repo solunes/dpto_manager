@@ -5,8 +5,10 @@ import { NavController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
-import { AppRouter } from '../../providers/app-router';
 import { AppSettings } from '../../providers/app-settings';
+
+import { DebtorPage } from '../debtor/debtor'
+import { PendingPaymentPage } from '../pending-payment/pending-payment'
 
 @Component({
   selector: 'page-home',
@@ -36,13 +38,13 @@ export class HomePage {
     private http: HttpClient,
     private app_settings: AppSettings,
     private loading: LoadingClient,
-    private storage: Storage,
-    private app_router: AppRouter) {
+    private storage: Storage) {
 
   	storage.get('token').then(value => {
       
   		loading.showLoading();
   		http.get('http://dptomanager.solunes.com/api/check-dashboard', value)
+        .timeout(3000)
         .map(res => res.json())
         .subscribe(result => {
           console.log(JSON.stringify(result));
@@ -63,10 +65,10 @@ export class HomePage {
   }
 
   private goToPendingPayment(){
-  	this.navCtrl.setRoot(this.app_router.getPage('pending-payment'));
+  	this.navCtrl.setRoot(PendingPaymentPage);
   }
 
   private goToDebtor(){
-  	this.navCtrl.setRoot(this.app_router.getPage('debtor'));
+  	this.navCtrl.setRoot(DebtorPage);
   }
 }

@@ -4,6 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
+import { AppRouter } from '../../providers/app-router';
 
 @Component({
   selector: 'page-notification',
@@ -30,13 +31,15 @@ export class NotificationPage {
   constructor(public navCtrl: NavController, 
     public storage: Storage,
     private http: HttpClient,
+    private router: AppRouter,
     private loading: LoadingClient,
     public navParams: NavParams) {
       loading.showLoading();
       storage.set('notificationsCount','');
-
+      
       storage.get('token').then(value => {
         http.get('http://dptomanager.solunes.com/api/notifications', value)
+          .timeout(3000)
           .map(res => res.json())
           .subscribe(result => {
             console.log(JSON.stringify(result));
@@ -48,7 +51,7 @@ export class NotificationPage {
           /*  loading.loading.dismiss().then(() => {
               loading.showError(error);
             });*/
-          });
+        }, () => console.log('END'));
       });
   }
 
@@ -56,4 +59,7 @@ export class NotificationPage {
     console.log('ionViewDidLoad NotificationPage');
   }
 
+  onClickItem(notifis){
+    this.navCtrl.setRoot(this.router.getPage("home"))
+  }
 }

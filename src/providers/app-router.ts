@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
+import { Routes } from '@angular/router';
 
 import { AboutPage } from '../pages/about/about';
 import { DebtorPage } from '../pages/debtor/debtor';
@@ -26,11 +27,16 @@ export class AppRouter {
     return this.appRoutes.find(x => x.path == path).component;
   }
 
-  appRoutes: Array<{path: string, component: any, data:any}> = [
+  appRoutes: Routes = [
     {
       path: 'home',
       component: HomePage,
       data: { title: 'Inicio' }
+    },
+    {
+      path: 'pending-payment',
+      component: PendingPaymentPage,
+      data: { title: 'Pagos Pendientes' }
     },
     {
       path: 'debtors',
@@ -41,11 +47,6 @@ export class AppRouter {
       path: 'payment-history',
       component: PaymentHistoryPage,
       data: { title: 'Historial de Pagos' }
-    },
-    {
-      path: 'pending-payment',
-      component: PendingPaymentPage,
-      data: { title: 'Pagos Pendientes' }
     },
     {
       path: 'about',
