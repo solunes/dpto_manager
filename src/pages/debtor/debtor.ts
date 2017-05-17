@@ -48,7 +48,7 @@ export class DebtorPage {
         this.debtors = result['total_payments'];
         loading.dismiss();
       }, error => {
-        loading.dismiss();
+        console.log('error: '+ error);
         loading.showError(error);
       });
     });

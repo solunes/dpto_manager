@@ -22,7 +22,8 @@ export class AboutPage {
   		loading.showLoading();
   		let token = value;
 	  	http.get('http://dptomanager.solunes.com/api/building-content', token)
-	  		.map(res => res.json())
+	  		.timeout(3000)
+            .map(res => res.json())
 	  		.subscribe(allowed => {
 	  			console.log("allowed: " + allowed);
 	  			loading.dismiss();

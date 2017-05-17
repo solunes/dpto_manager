@@ -40,6 +40,7 @@ export class PendingPaymentPage {
     loading.showLoading();
         storage.get('token').then(value => {
             http.get('http://dptomanager.solunes.com/api/payment-details/detail/me/pending/all/all', value)
+            .timeout(3000)
             .map(res => res.json())
             .subscribe(result => {
                 console.log(JSON.stringify(result));

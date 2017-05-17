@@ -3,7 +3,7 @@
 <ion-content padding>
 
   <ion-list style="margin-top: 55px;">
-    <ion-item [@itemState]="in" *ngFor='let notifis of notifications' (click)="onClickItem(notifis)">
+    <ion-item [@itemState]="in" *ngFor='let notifis of notifications' (click)="onClickItem(notifis)" [style.background-color]="notifis.checked_date ? 'white': 'grey'">
         <div>{{ notifis.name }}</div>
         <p>{{ notifis.created_at | date }}</p>
     </ion-item>

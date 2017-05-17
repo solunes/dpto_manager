@@ -21,6 +21,7 @@ import { HttpClient } from '../providers/http-client';
 import { LoadingClient } from '../providers/loading-client';
 
 import { Currency } from '../app/pipes/currency';
+import { Hightlight } from '../components/hightlight/hightlight';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -52,7 +53,8 @@ const cloudSettings: CloudSettings = {
     NotificationPage,
     PaymentHistoryPage,
     RegisterPaymentPage,
-    Currency
+    Currency,
+    Hightlight
   ],
   imports: [
     IonicModule.forRoot(MyApp),

@@ -35,7 +35,8 @@ export class MyApp {
     platform.ready().then(() => {
       this.storage.get('login').then((value) => {
         if(value) {
-          this.rootPage = this.app_router.getPage('debtors');
+          /*this.rootPage = this.app_router.getPage('debtors');*/
+          this.rootPage = NotificationPage;
           console.log('home');
         } else {
           this.rootPage = LoginPage;

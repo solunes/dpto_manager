@@ -42,6 +42,7 @@ export class PaymentHistoryPage {
     loading.showLoading();
     storage.get('token').then(value => {
       http.get('http://dptomanager.solunes.com/api/accounts/all/me/all', value)
+      .timeout(3000)
       .map(res => res.json())
       .subscribe(result => {
           this.histories = result['accounts'];
