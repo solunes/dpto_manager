@@ -1,6 +1,7 @@
 import { Component, trigger, state, style, transition, animate} from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
+import { Splashscreen } from 'ionic-native';
 
 import { AuthService } from '../../providers/auth-service';
 import { HttpClient } from '../../providers/http-client';

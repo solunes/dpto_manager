@@ -45,13 +45,13 @@ export class NotificationPage {
             console.log(JSON.stringify(result));
             loading.dismiss();
             this.notifications = result.notifications;
-        }, error => {
-          loading.dismiss();
-          console.log("error " + error);
-          /*  loading.loading.dismiss().then(() => {
+          }, error => {
+            loading.dismiss();
+            console.log("error " + error);
+            /*  loading.loading.dismiss().then(() => {
               loading.showError(error);
             });*/
-        }, () => console.log('END'));
+          });
       });
   }
 
@@ -60,6 +60,9 @@ export class NotificationPage {
   }
 
   onClickItem(notifis){
-    this.navCtrl.setRoot(this.router.getPage("home"))
+    // /*path*/
+    // link externo
+    // nada
+    this.navCtrl.setRoot(this.router.getPage(notifis.path))
   }
 }

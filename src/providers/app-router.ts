@@ -1,5 +1,4 @@
 import { Injectable, Inject } from '@angular/core';
-import { Routes } from '@angular/router';
 
 import { AboutPage } from '../pages/about/about';
 import { DebtorPage } from '../pages/debtor/debtor';
@@ -26,8 +25,7 @@ export class AppRouter {
     console.log(this.appRoutes.find(x => x.path == path));
     return this.appRoutes.find(x => x.path == path).component;
   }
-
-  appRoutes: Routes = [
+  appRoutes: Array<{path: string, component: any, data: {title:string}}> = [
     {
       path: 'home',
       component: HomePage,

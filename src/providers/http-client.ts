@@ -21,8 +21,6 @@ export class HttpClient {
   }
 
   get(url, token) {
-      setTimeout(() => {
-      },1000 );
       let headers = this.createAuthorizationHeader(token);
       return this.http.get(url, {
         headers: headers

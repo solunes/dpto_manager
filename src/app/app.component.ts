@@ -10,7 +10,6 @@ import {
 import { LoginPage } from '../pages/login/login';
 import { NotificationPage } from '../pages/notification/notification';
 
-import { LoadingClient } from '../providers/loading-client';
 import { AppRouter } from '../providers/app-router';
 
 @Component({
@@ -23,15 +22,15 @@ export class MyApp {
   rootPage: any;
 
   constructor(public platform: Platform,
-    private load: LoadingClient, 
     private storage: Storage, 
     public push: Push,
     public app_router: AppRouter,
     public alertCtrl: AlertController,
     public menu: MenuController) {
     
-    console.log('router ini');
+    Splashscreen.hide();
     this.pages = app_router.appRoutes;
+    this.initPush();
     platform.ready().then(() => {
       this.storage.get('login').then((value) => {
         if(value) {
@@ -43,20 +42,11 @@ export class MyApp {
           console.log('login');
         }
       });
-/*      this.pages = [
-        { title: 'Inicio', component: HomePage },
-        { title: 'Pagos Pendientes', component: PendingPaymentPage },
-        { title: 'Deudores Morosos', component: DebtorPage },
-        { title: 'Historial de Pagos', component: PaymentHistoryPage },
-        { title: 'Acerca del edificio', component: AboutPage },
-        { title: 'Registrar pago', component: RegisterPaymentPage }
-      ];*/
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
-      Splashscreen.hide();
 
-      this.initPush();
+      
+      StatusBar.styleDefault();
     });
   }
 
