@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
 import { Storage } from '@ionic/storage';
-import { Splashscreen } from 'ionic-native';
 import { MenuController, NavController, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { AppRouter } from '../../providers/app-router';

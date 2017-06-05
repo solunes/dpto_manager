@@ -1,14 +1,13 @@
 import { Component, trigger, state, style, transition, animate} from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NavController } from 'ionic-angular';
-import { Splashscreen } from 'ionic-native';
 
 import { AuthService } from '../../providers/auth-service';
 import { HttpClient } from '../../providers/http-client';
-import { LoadingClient } from '../../providers/loading-client';
 import { AppSettings } from '../../providers/app-settings';
 
 import { DebtorPage } from '../debtor/debtor'
+import { LoadingClient } from '../../providers/loading-client';
 import { PendingPaymentPage } from '../pending-payment/pending-payment'
 
 @Component({
@@ -33,36 +32,30 @@ export class HomePage {
 	pendingPayments: Array<any>;
 	debts: Array<any>;
   notificationsCount: number;
+  key_page: string = '/check-dashboard';
 
   constructor(private navCtrl: NavController, 
     private auth: AuthService, 
     private http: HttpClient,
-    private app_settings: AppSettings,
     private loading: LoadingClient,
+    private app_settings: AppSettings,
     private storage: Storage) {
 
-  	storage.get('token').then(value => {
-      
-  		loading.showLoading();
-  		http.get('http://dptomanager.solunes.com/api/check-dashboard', value)
-        .timeout(3000)
-        .map(res => res.json())
-        .subscribe(result => {
-          console.log(JSON.stringify(result));
-          this.pendingPayments = result['pendingPayments'];
-          this.debts = result['debts'];
-          this.notificationsCount = result['notificationsCount'];
-          this.storage.set('notificationsCount', this.notificationsCount);
-          loading.dismiss();
-      }, error => {
-        loading.dismiss();
-        console.log("error " + error);
-        /*  loading.loading.dismiss().then(() => {
-            loading.showError(error);
-          });*/
-        });
-  	});
-    
+    storage.get(this.key_page).then(data => {
+      loading.showLoading()
+      if (data) {
+        this.pendingPayments = data['pendingPayments'];
+        this.debts = data['debts'];
+        this.notificationsCount = data['notificationsCount'];
+      }
+      http.getRequest(this.key_page).subscribe(result => {
+        this.pendingPayments = result['pendingPayments'];
+        this.debts = result['debts'];
+        this.notificationsCount = result['notificationsCount'];
+        storage.set(this.key_page, result)
+        loading.dismiss()
+      }, error => loading.dismiss())
+    });
   }
 
   private goToPendingPayment(){

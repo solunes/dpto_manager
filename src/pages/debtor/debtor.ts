@@ -2,8 +2,8 @@ import { Component, trigger, state, style, transition, animate } from '@angular/
 import { Storage } from '@ionic/storage';
 import { NavParams } from 'ionic-angular';
 
-import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
+import { HttpClient } from '../../providers/http-client';
 /*
   Generated class for the Debtor page.
 
@@ -30,27 +30,29 @@ import { LoadingClient } from '../../providers/loading-client';
 export class DebtorPage {
 	title_page = 'Deudores morosos';
   notificationsCount: number;
-  debtors: Array<JSON>;
+  debtors: Array<JSON> = new Array();
+  key_page:string = '/payment-details/total/apartment/pending/all/all';
 
   constructor(
     public http: HttpClient, 
-    private loading: LoadingClient,
     private storage: Storage,
+    private loading: LoadingClient,
     public navParams: NavParams) {
 
-    loading.showLoading();
-    storage.get('token').then(value => {
-      http.get('http://dptomanager.solunes.com/api/payment-details/total/apartment/pending/all/all', value)
-      .timeout(3000)
-      .map(res => res.json())
-      .subscribe(result => {
-        /*console.log(JSON.stringify(result));*/
-        this.debtors = result['total_payments'];
-        loading.dismiss();
-      }, error => {
-        console.log('error: '+ error);
-        loading.showError(error);
-      });
+    storage.get(this.key_page).then(data => {
+      loading.showLoading()
+      let last_id = 0
+      if (data) {
+        this.debtors = data;
+        last_id = http.getLastId(data)
+      }
+      http.getRequest(this.key_page, last_id).subscribe(result => {
+        for (var i = 0; i < result['total_payments'].length; i++) {
+          this.debtors.push(result['total_payments'][i])
+        }
+        storage.set(this.key_page, this.debtors)
+        loading.dismiss()
+      }, error => loading.dismiss())
     });
     storage.get('notificationsCount').then(value => {
       this.notificationsCount = value;

@@ -47,12 +47,12 @@ export class LoadingClient {
 	  	let toast = this.toastCtrl.create({
 	    	message: text,
 	    	duration: 3000,
-	    	position: 'top'
+	    	position: 'bottom'
 	  	});
 	  	toast.present();
 	}
 
 	dismiss(){
-		this.loading.dismiss();
+		this.loading.dismissAll()
 	}
 }

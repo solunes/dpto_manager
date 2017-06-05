@@ -1,9 +1,8 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { AboutPage } from '../pages/about/about';
 import { DebtorPage } from '../pages/debtor/debtor';
 import { HomePage } from '../pages/home/home';
-import { NotificationPage } from '../pages/notification/notification';
 import { PaymentHistoryPage } from '../pages/payment-history/payment-history';
 import { PendingPaymentPage } from '../pages/pending-payment/pending-payment';
 import { RegisterPaymentPage } from '../pages/register-payment/register-payment';
@@ -18,11 +17,9 @@ import { RegisterPaymentPage } from '../pages/register-payment/register-payment'
 export class AppRouter {
 
   constructor() {
-    console.log('Hello AppRouter Provider');
   }
   
   getPage(path): any{
-    console.log(this.appRoutes.find(x => x.path == path));
     return this.appRoutes.find(x => x.path == path).component;
   }
   appRoutes: Array<{path: string, component: any, data: {title:string}}> = [

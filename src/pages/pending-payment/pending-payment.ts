@@ -29,30 +29,34 @@ import { LoadingClient } from '../../providers/loading-client';
 })
 export class PendingPaymentPage {
 	title_page = 'Pagos Pendientes';
-  pendingPayments: Array<any>;
+  pendingPayments: Array<JSON> = new Array();
   notificationsCount: number;
+  key_page: string = '/payment-details/detail/me/pending/all/all';
 
   constructor(public navCtrl: NavController, 
         public http: HttpClient, 
         private loading: LoadingClient,
         private storage: Storage) {
 
-    loading.showLoading();
-        storage.get('token').then(value => {
-            http.get('http://dptomanager.solunes.com/api/payment-details/detail/me/pending/all/all', value)
-            .timeout(3000)
-            .map(res => res.json())
-            .subscribe(result => {
-                console.log(JSON.stringify(result));
-                this.pendingPayments = result['detail_payments'];
-                loading.dismiss();
-            }, error => {
-                loading.dismiss();
-                loading.showError(error);
-            });
-        });
-        storage.get('notificationsCount').then(value => {
-          this.notificationsCount = value;
-        });
+    storage.get(this.key_page).then(data => {
+      loading.showLoading()
+      console.log(data)
+      let last_id = 0;
+      if (data) {
+        this.pendingPayments = data;
+        last_id = http.getLastId(this.pendingPayments);
+      }
+      http.getRequest(this.key_page, last_id).subscribe(result => {
+        console.log(result)
+        for (var i = 0; i < result['detail_payments'].length; i++) {
+          this.pendingPayments.push(result['detail_payments'][i]);
+        }
+        storage.set(this.key_page, this.pendingPayments)
+        loading.dismiss()
+      }, error => loading.dismiss())
+    })
+    storage.get('notificationsCount').then(value => {
+      this.notificationsCount = value;
+    });
   }
 }

@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { Storage } from '@ionic/storage';
+import { LoadingClient } from './loading-client';
+import { AppSettings } from './app-settings';
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+
+
 
 /*
   Generated class for the HttpClient provider.
@@ -11,26 +17,50 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class HttpClient {
   token: string;
+  timeout_value: number = 5000;
 
-  constructor(public http: Http) {}
+  constructor(public http: Http,
+      private storage: Storage,
+      private loading: LoadingClient,) {}
 
-  createAuthorizationHeader(token) {
+  getApiToken() : Observable<any> {
+    return Observable.fromPromise(this.storage.get('token'))
+  }
+
+  createAuthorizationHeader(token) : Headers{
     let headers = new Headers();
-    headers.append('Authorization', 'Bearer ' + token);
     return headers;
   }
 
-  get(url, token) {
-      let headers = this.createAuthorizationHeader(token);
-      return this.http.get(url, {
-        headers: headers
-      });
+  getRequest(endpoint: string, last_id:number = 0): Observable<any> {
+    return this.getApiToken().flatMap(token => {
+
+      let headers: Headers = new Headers();
+      headers.append('Authorization', 'Bearer ' + token);
+
+      return this.http.get(AppSettings.getApiUrl() + endpoint + '?last_id='+last_id, {headers: headers})
+        .timeout(this.timeout_value)
+        .map(res =>  res.json())
+    });
   }
 
-  post(url, token, data) {
-    let headers = this.createAuthorizationHeader(token);
-    return this.http.post(url, data, {
-      headers: headers
+  postRequest(endpoint: string, data) : Observable<any>{
+    return this.getApiToken().flatMap(token => {
+
+      let headers: Headers = new Headers();
+      headers.append('Authorization', 'Bearer ' + token);
+
+      return this.http.post(AppSettings.getApiUrl() + endpoint, data, {headers:headers})
+        .timeout(this.timeout_value).map(res =>  res.json())
     });
+  }
+
+  //<>
+
+  public getLastId(data): number{
+    if (data) {
+      return data[0]['id']
+    }
+    return 0
   }
 }

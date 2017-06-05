@@ -28,10 +28,10 @@ export class MyApp {
     public alertCtrl: AlertController,
     public menu: MenuController) {
     
-    Splashscreen.hide();
     this.pages = app_router.appRoutes;
     this.initPush();
     platform.ready().then(() => {
+      Splashscreen.hide();
       this.storage.get('login').then((value) => {
         if(value) {
           /*this.rootPage = this.app_router.getPage('debtors');*/
@@ -90,7 +90,6 @@ export class MyApp {
   }
 
   public openPage(page) {
-    console.log(page);
     // close the menu when clicking a link from the menu
     this.menu.close();
     // navigate to the new page if it is not the current page

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 
 const CONFIG = {
-	apiUrl: 'http://dptomanager.solunes.com'
+	apiUrl: 'http://dptomanager.solunes.com/api'
 };
 
 @Injectable()
@@ -11,7 +11,7 @@ export class AppSettings {
   constructor() {
   }
 
-  public getApiUrl(){
+  static getApiUrl(){
   	return CONFIG.apiUrl;
   }
 }

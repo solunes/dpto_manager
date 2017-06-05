@@ -1,9 +1,13 @@
 import { Component, trigger, state, style, transition, animate } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { Observable } from 'rxjs/Rx';
+
 import { HttpClient } from '../../providers/http-client';
 import { NavController, Platform, ActionSheetController, ToastController, } from 'ionic-angular';
 import { Camera, File, Transfer } from 'ionic-native';
+import { AppSettings } from '../../providers/app-settings';
 import { LoadingClient } from '../../providers/loading-client';
+
 /*
   Generated class for the RegisterPayment page.
 
@@ -40,47 +44,42 @@ export class RegisterPaymentPage{
     currency: 'bob',
     payment_array: []
   }
-  payment_array: Array<any>;
+  payment_array: Array<JSON> = new Array();
   token: string;
   saldo: number = 0;
   total: number = 0;
-  notificationsCount: number;
   actor_id: number;
+  notificationsCount: number;
+  key_page: string = '/payment-details/detail/me/pending/all/all';
 
   constructor(public navCtrl: NavController,
     public actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController,
     public platform: Platform,
+    private loading: LoadingClient,
     private storage: Storage,
-    public http: HttpClient, 
-    public loading: LoadingClient) {
+    public http: HttpClient) {
     
     platform.ready().then(() => {
     //I made a plugin for testing...
       console.log("window['pluginTest']: "+ (window['pluginTest'] ? true: false));
       console.log("window['FilePath']: "+ (window['FilePath'] ? true: false));
       FilePath = window['FilePath'];
-      storage.get('token').then(value => {
-        this.token = value;
-      });
-
-      /*
-      var res = [{"id":175,"name":"4ta Cuota de Agua","amount":70.00,"currency":"bob","status":"pending","date":"2017-01-21"},{"id":145,"name":"3ra Cuota de Agua","amount":70.00,"currency":"bob","status":"pending","date":"2017-01-14"},{"id":115,"name":"2da Cuota de Agua","amount":70.00,"currency":"bob","status":"pending","date":"2017-01-07"},{"id":25,"name":"Mantenimiento Mensual","amount":390.00,"currency":"bob","status":"paid","date":"2017-01-01"},{"id":55,"name":"Mensualidad Agua EPSAS","amount":40.00,"currency":"bob","status":"paid","date":"2017-01-01"},{"id":85,"name":"1ra Cuota de Agua","amount":70.00,"currency":"bob","status":"pending","date":"2017-01-01"}];
-      this.payment_array = res;*/
       storage.get('actor_id').then(value => {
         this.actor_id = value;
       })
 
-      storage.get('token').then(value => {
-      http.get('http://dptomanager.solunes.com/api/payment-details/detail/me/pending/all/all', value)
-        .map(res => res.json())
-        .subscribe(result => {
-            console.log(JSON.stringify(result));
-            this.payment_array = result['detail_payments']
+      storage.get(this.key_page).then(data => {
+        if (data) {
+          this.payment_array = data
+        }
+        http.getRequest(this.key_page).subscribe(result => {
+          this.payment_array = result['detail_payments']
+          storage.set(this.key_page, this.payment_array)
         }, error => {
-            loading.showError(error);
-        });
-      });
+          console.log(error)
+        })
+      })
       storage.get('notificationsCount').then(value => {
         this.notificationsCount = value;
       });
@@ -180,7 +179,7 @@ export class RegisterPaymentPage{
 
   logText;
   public uploadImage(){
-    let url = "http://dptomanager.solunes.com/api/create-account";
+    let url = AppSettings.getApiUrl() + "/create-account";
 
     let targetPath = this.pathForImage(this.lastImage);
 
@@ -296,5 +295,3 @@ export class RegisterPaymentPage{
     }
   }
 }
-
-/* < | > */

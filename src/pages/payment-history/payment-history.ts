@@ -1,6 +1,7 @@
 import { Component, trigger, state, style, transition, animate } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Rx';
 
 import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
@@ -30,31 +31,35 @@ import { LoadingClient } from '../../providers/loading-client';
 })
 export class PaymentHistoryPage {
 	title_page = 'Historial de pagos';
-  histories: Array<any>;
+  histories: Array<JSON> = new Array();
   notificationsCount: number;
+  key_page: string = '/accounts/all/me/all';
 
   constructor(public http: HttpClient, 
         public navCtrl: NavController, 
-        private loading: LoadingClient,
         private storage: Storage,
+        private loading: LoadingClient,
         public navParams: NavParams) {
 
-    loading.showLoading();
-    storage.get('token').then(value => {
-      http.get('http://dptomanager.solunes.com/api/accounts/all/me/all', value)
-      .timeout(3000)
-      .map(res => res.json())
-      .subscribe(result => {
-          this.histories = result['accounts'];
-          loading.dismiss();
-        }, error => {
-          loading.dismiss();
-          loading.showError(error);
-        });
-    });
     storage.get('notificationsCount').then(value => {
-        this.notificationsCount = value;
-      });
+      this.notificationsCount = value;
+    });
+
+    storage.get(this.key_page).then(data => {
+      loading.showLoading()
+      let last_id = 0
+      if (data) {
+        this.histories = data
+        last_id = http.getLastId(data);
+      }
+      http.getRequest(this.key_page, last_id).subscribe(result => {
+        for (var i = 0; i < result['accounts'].length; i++) {
+          this.histories.push(result['accounts'][i])
+        }
+        storage.set(this.key_page, this.histories);
+        loading.dismiss()
+      }, error => loading.dismiss())
+    });
   }
 
 }
