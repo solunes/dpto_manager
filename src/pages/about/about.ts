@@ -20,18 +20,18 @@ export class AboutPage {
     private loading: LoadingClient,
     private storage: Storage) {
     storage.get(this.key_page).then(data_saved => {
-      loading.showLoading()
+      loading.showLoading(data_saved)
       if (data_saved) {
         this.name = data_saved['name']
         this.text = data_saved['text']
       }
       
-      http.getRequest(this.key_page).subscribe(result => {
+      http.getRequest(this.key_page, this.loading.loading_page).subscribe(result => {
         this.name = result['name']
         this.text = result['text']
         storage.set(this.key_page, result)
         loading.dismiss()
-      }, error => loading.dismiss())
+      }, error => loading.showError(error))
     })
     storage.get('notificationsCount').then(value => {
         this.notificationsCount = value;

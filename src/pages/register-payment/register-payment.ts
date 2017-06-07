@@ -73,12 +73,10 @@ export class RegisterPaymentPage{
         if (data) {
           this.payment_array = data
         }
-        http.getRequest(this.key_page).subscribe(result => {
+        http.getRequest(this.key_page, false).subscribe(result => {
           this.payment_array = result['detail_payments']
           storage.set(this.key_page, this.payment_array)
-        }, error => {
-          console.log(error)
-        })
+        }, error => loading.showError(error))
       })
       storage.get('notificationsCount').then(value => {
         this.notificationsCount = value;

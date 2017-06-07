@@ -39,21 +39,20 @@ export class PendingPaymentPage {
         private storage: Storage) {
 
     storage.get(this.key_page).then(data => {
-      loading.showLoading()
-      console.log(data)
-      let last_id = 0;
+      let last_id;
       if (data) {
         this.pendingPayments = data;
         last_id = http.getLastId(this.pendingPayments);
       }
-      http.getRequest(this.key_page, last_id).subscribe(result => {
+      loading.showLoading(last_id)
+      http.getRequest(this.key_page, this.loading.loading_page, last_id).subscribe(result => {
         console.log(result)
         for (var i = 0; i < result['detail_payments'].length; i++) {
-          this.pendingPayments.push(result['detail_payments'][i]);
+          this.pendingPayments.unshift(result['detail_payments'][i]);
         }
         storage.set(this.key_page, this.pendingPayments)
         loading.dismiss()
-      }, error => loading.dismiss())
+      }, error => loading.showError(error))
     })
     storage.get('notificationsCount').then(value => {
       this.notificationsCount = value;

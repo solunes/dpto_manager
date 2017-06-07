@@ -40,19 +40,19 @@ export class DebtorPage {
     public navParams: NavParams) {
 
     storage.get(this.key_page).then(data => {
-      loading.showLoading()
-      let last_id = 0
+      let last_id
       if (data) {
         this.debtors = data;
         last_id = http.getLastId(data)
       }
-      http.getRequest(this.key_page, last_id).subscribe(result => {
+      loading.showLoading(last_id,)
+      http.getRequest(this.key_page, this.loading.loading_page, last_id).subscribe(result => {
         for (var i = 0; i < result['total_payments'].length; i++) {
           this.debtors.push(result['total_payments'][i])
         }
         storage.set(this.key_page, this.debtors)
         loading.dismiss()
-      }, error => loading.dismiss())
+      }, error => loading.showError(error))
     });
     storage.get('notificationsCount').then(value => {
       this.notificationsCount = value;

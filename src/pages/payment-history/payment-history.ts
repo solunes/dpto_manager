@@ -1,7 +1,6 @@
 import { Component, trigger, state, style, transition, animate } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { NavController, NavParams } from 'ionic-angular';
-import { Observable } from 'rxjs/Rx';
 
 import { HttpClient } from '../../providers/http-client';
 import { LoadingClient } from '../../providers/loading-client';
@@ -46,19 +45,19 @@ export class PaymentHistoryPage {
     });
 
     storage.get(this.key_page).then(data => {
-      loading.showLoading()
-      let last_id = 0
+      let last_id
       if (data) {
         this.histories = data
         last_id = http.getLastId(data);
       }
-      http.getRequest(this.key_page, last_id).subscribe(result => {
+      loading.showLoading(last_id)
+      http.getRequest(this.key_page, this.loading.loading_page, last_id).subscribe(result => {
         for (var i = 0; i < result['accounts'].length; i++) {
-          this.histories.push(result['accounts'][i])
+          this.histories.unshift(result['accounts'][i])
         }
         storage.set(this.key_page, this.histories);
         loading.dismiss()
-      }, error => loading.dismiss())
+      }, error => loading.showError(error))
     });
   }
 

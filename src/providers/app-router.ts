@@ -22,6 +22,7 @@ export class AppRouter {
   getPage(path): any{
     return this.appRoutes.find(x => x.path == path).component;
   }
+  
   appRoutes: Array<{path: string, component: any, data: {title:string}}> = [
     {
       path: 'home',

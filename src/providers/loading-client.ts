@@ -12,16 +12,24 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class LoadingClient {
 	loading: Loading;
+    loading_page: boolean = false
+	is_present: boolean = false
 
   	constructor(public http: Http, 
   		public loadingCtrl: LoadingController, 
   		public toastCtrl: ToastController) {}
 
-  	showLoading(){
-		this.loading = this.loadingCtrl.create({
-			content: "Please wait..."
-		});
-		this.loading.present();
+  	showLoading(last_id:any=undefined){
+  		if (last_id) {
+  			console.log(last_id)
+            this.loading_page = true
+          } else {
+            this.loading = this.loadingCtrl.create({
+                content: "Please wait..."
+            });
+            this.is_present = true
+			this.loading.present();
+  		}
 	}
 
 	showLoadingText(text){
@@ -32,9 +40,7 @@ export class LoadingClient {
 	}
 
 	showError(text){
-		setTimeout(() => {
-			this.loading.dismiss();
-		});
+		this.dismiss();
 		const toast = this.toastCtrl.create({
 			message: text,
 			showCloseButton: true,
@@ -53,6 +59,11 @@ export class LoadingClient {
 	}
 
 	dismiss(){
-		this.loading.dismissAll()
+        if (this.is_present) {
+            this.loading.dismiss()
+            this.is_present = false
+        } else {
+            this.loading_page = false
+        }
 	}
 }

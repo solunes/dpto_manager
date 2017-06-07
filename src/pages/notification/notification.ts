@@ -23,7 +23,7 @@ import { LoadingClient } from '../../providers/loading-client';
   ]
 })
 export class NotificationPage {
-	title_page = 'Notificaciones';
+  title_page = 'Notificaciones';
   notificationsCount: number;
   notifications: Array<JSON> = new Array();
   key_page: string = '/notifications';
@@ -36,36 +36,23 @@ export class NotificationPage {
     public navParams: NavParams) {
 
       storage.set('notificationsCount','');
-      storage.set(this.key_page, '')
       storage.get(this.key_page).then(data => {
-        let last_id = 0
-        console.log(data)
-        loading.showLoading()
+        let last_id
         if (data) {
           this.notifications = data
           last_id = http.getLastId(this.notifications)
-          console.log(last_id)
         }
-
-        http.getRequest(this.key_page, last_id).subscribe(result => {
-          console.log(result)
-          for (var i = 0; i < result['notifications'].length; i++) {
-            this.notifications.push(result['notifications'][i])
-          }
-          storage.set(this.key_page, this.notifications);
-          loading.dismiss()
-        }, error => loading.dismiss())
+        if (!this.loading.loading_page) {
+          this.loading.showLoading(last_id)
+          http.getRequest(this.key_page, this.loading.loading_page, last_id).subscribe((result: Array<JSON>) => {
+            for (var i = 0; i < result['notifications'].length; i++) {
+              this.notifications.unshift(result['notifications'][i])
+            }
+            storage.set(this.key_page, this.notifications);
+            this.loading.dismiss()
+          }, error => this.loading.showError(error))
+        }
       });
-      
-      //http.endpointRequest(this.key_page, 0, null);
-      //http.todos.subscribe(value => {
-      //  if (value['notifications']) {
-      //    // guardar
-      //    console.log(value)
-      //    this.notifications = value['notifications'];
-      //    storage.set(this.key_page, value);
-      //  }
-      //});
   }
 
   onClickItem(notifiItem){

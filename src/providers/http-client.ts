@@ -6,8 +6,6 @@ import { AppSettings } from './app-settings';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
-
-
 /*
   Generated class for the HttpClient provider.
 
@@ -32,16 +30,18 @@ export class HttpClient {
     return headers;
   }
 
-  getRequest(endpoint: string, last_id:number = 0): Observable<any> {
-    return this.getApiToken().flatMap(token => {
+  getRequest(endpoint: string, loading:boolean, last_id:number = 0): Observable<any> {
+    
+      return this.getApiToken().flatMap(token => {
 
-      let headers: Headers = new Headers();
-      headers.append('Authorization', 'Bearer ' + token);
-
-      return this.http.get(AppSettings.getApiUrl() + endpoint + '?last_id='+last_id, {headers: headers})
-        .timeout(this.timeout_value)
-        .map(res =>  res.json())
-    });
+        let headers: Headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + token);
+        console.log('get')
+        return this.http.get(AppSettings.getApiUrl() + endpoint + '?last_id='+last_id, {headers: headers})
+          .timeout(this.timeout_value)
+          .map(res =>  res.json())
+      });
+    
   }
 
   postRequest(endpoint: string, data) : Observable<any>{

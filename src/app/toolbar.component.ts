@@ -19,6 +19,7 @@ import { NotificationPage } from '../pages/notification/notification';
     		</ion-title>
 
     		<ion-buttons end>
+          <button ion-button *ngIf="loading"><ion-spinner icon="android"></ion-spinner></button>
           <button ion-button (click)="showNotifi()"><ion-icon name="notifications"></ion-icon><ion-badge item-right>{{ notificationsCount }}</ion-badge></button>
           <button ion-button (click)="logout()"><ion-icon name="log-out"></ion-icon></button>
         </ion-buttons>
@@ -28,6 +29,7 @@ import { NotificationPage } from '../pages/notification/notification';
 })
 export class ToolbarComponent{
   @Input() title_page: string = 'Toolbar';
+  @Input() loading: boolean = false;
   @Input() notificationsCount: number;
   constructor(private navCtrl: NavController, 
       private auth: AuthService, 

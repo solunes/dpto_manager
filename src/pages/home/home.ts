@@ -42,19 +42,19 @@ export class HomePage {
     private storage: Storage) {
 
     storage.get(this.key_page).then(data => {
-      loading.showLoading()
+      loading.showLoading(data)
       if (data) {
         this.pendingPayments = data['pendingPayments'];
         this.debts = data['debts'];
         this.notificationsCount = data['notificationsCount'];
       }
-      http.getRequest(this.key_page).subscribe(result => {
+      http.getRequest(this.key_page, this.loading.loading_page).subscribe(result => {
         this.pendingPayments = result['pendingPayments'];
         this.debts = result['debts'];
         this.notificationsCount = result['notificationsCount'];
         storage.set(this.key_page, result)
         loading.dismiss()
-      }, error => loading.dismiss())
+      }, error => loading.showError(error))
     });
   }
 
